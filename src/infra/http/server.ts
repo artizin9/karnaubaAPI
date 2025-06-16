@@ -1,6 +1,6 @@
 import fastifyCookie from "@fastify/cookie";
 import fastifyMultipart from "@fastify/multipart";
-import fastify from "fastify";
+import fastify, { FastifyReply, FastifyRequest } from "fastify";
 import { env } from "../../config/env";
 import fastifyRateLimit from "@fastify/rate-limit";
 import { registerRoutes } from "./routes/registerRoutes";
@@ -55,6 +55,10 @@ server.register(fastifySwaggerUi, {
     }
 });
 server.register(registerRoutes);
+
+server.get('/', (req: FastifyRequest, res: FastifyReply) =>{
+    res.send('Acesse a documentação :) : https://karnaubaapi.onrender.com/docs', )
+})
 
 server.listen({ port: Number(env.PORT), host: '0.0.0.0' }).then(() => {
     console.log("HTTP SERVER RUNNING!")
