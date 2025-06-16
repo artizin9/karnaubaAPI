@@ -56,6 +56,6 @@ server.register(fastifySwaggerUi, {
 });
 server.register(registerRoutes);
 
-server.listen({ port: Number(env.PORT) }).then(() => {
+server.listen({ port: Number(env.PORT), host: '0.0.0.0' }).then(() => {
     console.log("HTTP SERVER RUNNING!")
 })
