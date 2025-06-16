@@ -57,7 +57,7 @@ server.register(fastifySwaggerUi, {
 server.register(registerRoutes);
 
 server.get('/', (req: FastifyRequest, res: FastifyReply) =>{
-    res.send('Acesse a documentação :) : https://karnaubaapi.onrender.com/docs', )
+    res.send('Bem vindo a API da Massape Fascinante')
 })
 
 server.listen({ port: Number(env.PORT), host: '0.0.0.0' }).then(() => {
