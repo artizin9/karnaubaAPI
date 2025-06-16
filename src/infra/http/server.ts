@@ -21,7 +21,6 @@ server.register(fastifyRateLimit, {
     max: 1000,
     timeWindow: '1 minute',
     keyGenerator: (req) => {
-        console.log(req.ip)
         return req.ip
     },
     skipOnError: true,
