@@ -261,16 +261,6 @@ export function adminCreateGoogle(fastify: FastifyInstance) {
 
 export function adminLoginGoogle(fastify: FastifyInstance) {
     fastify.post('/admin/login/google',{
-        config: {
-            rateLimit: {
-                max: 5,
-                timeWindow: 15 * 60 * 1000,
-                errorResponseBuilder: () => ({
-                    statusCode: 429,
-                    message: "Too many requests, please try again later"
-                })
-            }
-        },
         schema: {
             summary: "Admin Login with Google",
             description: 'This endpoint allows an administrator to log in using Google authentication. It requires the Google ID token to verify the user\'s identity and returns a JWT token for authentication.',
