@@ -3,7 +3,6 @@ export interface TokenForChangePassword {
     createResetToken(token: string, email: string): Promise<string>;
     validateResetLinkToken(token: string): Promise<boolean>;
     invalidateResetLinkToken(token: string): Promise<void>;
-    applyRatelimit(email: string, ip: string): Promise<void>;
     sendPasswordRecoveryEmail(code: string, email: string): Promise<void>;
     getEmailByToken(token: string): Promise<string | null>;
     storeVerificationCode(email: string, code: string): Promise<void>;

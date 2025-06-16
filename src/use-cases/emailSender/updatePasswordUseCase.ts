@@ -18,7 +18,6 @@ export class UpdatePasswordUseCase {
         const { password, token } = parsedData.data!;
 
         const email = await this.changePassoword.getEmailByToken(token);
-        console.log("esse é o email: ", email);
         if (!email) throw new ServerError("Invalid email", 401);
 
         await this.changePassoword.allowReset(email);

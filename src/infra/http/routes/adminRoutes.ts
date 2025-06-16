@@ -48,18 +48,6 @@ export function adminRegister(fastify: FastifyInstance) {
 
 export function adminLogin(fastify: FastifyInstance) {
     fastify.post('/admin/login', {
-        config: {
-            rateLimit: {
-                max: 5,
-                timeWindow: 15 * 60 * 1000,
-                errorResponseBuilder: () => {
-                    return {
-                        statusCode: 429,
-                        message: 'Too many requests, please try again later.'
-                    }
-                }
-            }
-        },
         schema: {
             summary: "Admin Login",
             description: 'This endpoint allows an administrator to log in using their email and password. If successful, it returns a JWT token that will be turned into a cookie for authentication.',

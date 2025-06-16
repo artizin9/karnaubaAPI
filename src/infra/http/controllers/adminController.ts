@@ -45,6 +45,8 @@ export class AdminController {
     async login(fastify: FastifyContextDTO){
         const data = fastify.req.body as adminLoginDTO;
         const token = await this.adminLoginUseCase.execute(data);
+         console.log('Remaining:', fastify.res.getHeader('x-ratelimit-remaining'));
+           console.log('Limit:', fastify.res.getHeader('x-ratelimit-limit'));
         return fastify.res.setCookie("token", token.token,{
             httpOnly: true,
             secure: env.NODE_ENV === "production",

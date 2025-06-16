@@ -39,20 +39,6 @@ export class RedisService implements TokenForChangePassword {
         return code !== null;
     }
 
-    async applyRatelimit(email: string, ip: string): Promise<void> {
-        const ipKey = ip;
-        const ipCount = parseFloat(await redis.incrbyfloat(ipKey, 1));
-
-        if (ipCount === 0) await redis.expire(ipKey, 3600);
-        if (ipCount >= 5) throw new ServerError("tried many time", 429)
-
-        const emailKey = email;
-        const emailCount = parseFloat(await redis.incrbyfloat(emailKey, 1));
-
-        if (emailCount === 0) await redis.expire(emailKey, 3600);
-        if (emailCount >= 5) throw new ServerError("tried many time", 429);
-    }
-
     async sendPasswordRecoveryEmail(code: string, email: string): Promise<void> {
         await this.senderEmail.senderEmail({ code, email })
     }
