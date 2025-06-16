@@ -10,70 +10,73 @@ import { AdminCreateGoogleUseCase } from "../../../use-cases/google/adminCreateG
 import { AdminLoginGoogleUseCase } from "../../../use-cases/google/adminLoginGoogleUseCase";
 
 export class AdminController {
-    constructor(
-        private readonly adminCreateUseCase: AdminCreateUseCase,
-        private readonly adminUpdateUseCase: AdminUpdateUseCase,
-        private readonly adminDeleteUseCase: AdminDeleteUseCase,
-        private readonly adminFindUniqueUseCase: AdminFindUniqueUseCase,
-        private readonly adminLoginUseCase: AdminLoginUseCase,
-        private readonly adminCreateGoogleUseCase: AdminCreateGoogleUseCase,
-        private readonly adminLoginGoogleUseCase: AdminLoginGoogleUseCase
-    ){}
+  constructor(
+    private readonly adminCreateUseCase: AdminCreateUseCase,
+    private readonly adminUpdateUseCase: AdminUpdateUseCase,
+    private readonly adminDeleteUseCase: AdminDeleteUseCase,
+    private readonly adminFindUniqueUseCase: AdminFindUniqueUseCase,
+    private readonly adminLoginUseCase: AdminLoginUseCase,
+    private readonly adminCreateGoogleUseCase: AdminCreateGoogleUseCase,
+    private readonly adminLoginGoogleUseCase: AdminLoginGoogleUseCase
+  ) {}
 
-    async create(fastify: FastifyContextDTO){
-        const data = fastify.req.body as adminDTO;
-        const admin = await this.adminCreateUseCase.execute(data);
-        return fastify.res.status(201).send({message: "Admin created", admin});
-    }
-    
-    async update(fastify: FastifyContextDTO){
-        const data = fastify.req.body as adminDTO;
-        const admin = await this.adminUpdateUseCase.execute(data, fastify.req);
-        return fastify.res.status(200).send({message: "Updated admin", admin});
-    }
+  async create(fastify: FastifyContextDTO) {
+    const data = fastify.req.body as adminDTO;
+    const admin = await this.adminCreateUseCase.execute(data);
+    return fastify.res.status(201).send({ message: "Admin created", admin });
+  }
 
-    async delete(fastify: FastifyContextDTO){
-        await this.adminDeleteUseCase.execute(fastify.req);
-        return fastify.res.status(200).send({message: "Deleted admin"});
-    }
+  async update(fastify: FastifyContextDTO) {
+    const data = fastify.req.body as adminDTO;
+    const admin = await this.adminUpdateUseCase.execute(data, fastify.req);
+    return fastify.res.status(200).send({ message: "Updated admin", admin });
+  }
 
-    async findUnique(fastify: FastifyContextDTO){
-        const admin = await this.adminFindUniqueUseCase.execute(fastify.req);
-        return fastify.res.status(200).send({message: "Admin found", admin});
-    }
+  async delete(fastify: FastifyContextDTO) {
+    await this.adminDeleteUseCase.execute(fastify.req);
+    return fastify.res.status(200).send({ message: "Deleted admin" });
+  }
 
-    async login(fastify: FastifyContextDTO){
-        const data = fastify.req.body as adminLoginDTO;
-        const token = await this.adminLoginUseCase.execute(data);
-        return fastify.res.setCookie("token", token.token,{
-            httpOnly: true,
-            secure: env.NODE_ENV === "production",
-            sameSite: 'lax',
-            path: '/',
-            maxAge: token.remenberMe ? 3600 * 24 * 30 : 60 * 60 * 24
-        }).status(200).send({message: "Admin logged in", remenberMe: token.remenberMe});
-    }
+  async findUnique(fastify: FastifyContextDTO) {
+    const admin = await this.adminFindUniqueUseCase.execute(fastify.req);
+    return fastify.res.status(200).send({ message: "Admin found", admin });
+  }
 
-    async logout(fastify: FastifyContextDTO) {
-        fastify.res.clearCookie("token", { path: "/",});
-        return fastify.res.status(200).send({ message: "Logout successful" });
-    }  
+  async login(fastify: FastifyContextDTO) {
+    const data = fastify.req.body as adminLoginDTO;
+    const token = await this.adminLoginUseCase.execute(data);
+    return fastify.res
+      .setCookie("token", token.token, {
+        httpOnly: true,
+        secure: env.NODE_ENV === "production",
+        sameSite: "none",
+        path: "/",
+        maxAge: token.remenberMe ? 3600 * 24 * 30 : 60 * 60 * 24,
+      })
+      .status(200)
+      .send({ message: "Admin logged in", remenberMe: token.remenberMe });
+  }
 
-    async createWithGoogle(fastify: FastifyContextDTO){
-        const { idToken } = fastify.req.body as { idToken: string };
-        const admin = await this.adminCreateGoogleUseCase.execute({idToken});
-        fastify.res.status(201).send({message: "Admin created", admin})
-    }
+  async logout(fastify: FastifyContextDTO) {
+    fastify.res.clearCookie("token", { path: "/" });
+    return fastify.res.status(200).send({ message: "Logout successful" });
+  }
 
-    async loginWithGoogle(fastify: FastifyContextDTO){
-        const { idToken } = fastify.req.body as { idToken: string };
-        const admin = await this.adminLoginGoogleUseCase.execute({idToken});
-        fastify.res.setCookie('token', admin.tokenJWT, {
-            httpOnly: true,
-            secure: env.NODE_ENV === "production",
-            sameSite: 'lax',
-            path: '/',
-            maxAge: 3600 * 24 * 7
-        })
-    }
+  async createWithGoogle(fastify: FastifyContextDTO) {
+    const { idToken } = fastify.req.body as { idToken: string };
+    const admin = await this.adminCreateGoogleUseCase.execute({ idToken });
+    fastify.res.status(201).send({ message: "Admin created", admin });
+  }
+
+  async loginWithGoogle(fastify: FastifyContextDTO) {
+    const { idToken } = fastify.req.body as { idToken: string };
+    const admin = await this.adminLoginGoogleUseCase.execute({ idToken });
+    fastify.res.setCookie("token", admin.tokenJWT, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 3600 * 24 * 7,
+    });
+  }
 }
