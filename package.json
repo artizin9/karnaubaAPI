@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx src/infra/http/server.ts",
-    "build": "prisma generate && tsc",
+    "build": "prisma generate && tsc && node fix-imports.mjs",
     "start": "prisma migrate deploy && node dist/infra/http/server.js"
   },
   "keywords": [],
