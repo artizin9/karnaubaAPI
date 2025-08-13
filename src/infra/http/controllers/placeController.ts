@@ -42,6 +42,9 @@ export class PlaceController {
 
     async delete(fastify: FastifyContextDTO) {
         const { id } = fastify.req.params as { id: string };
+         fastify.req.body = {
+            valo: 'valor'
+        };
         await this.deleteUseCase.execute(id);
         fastify.res.send("Place deleted");
     }
