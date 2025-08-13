@@ -47,6 +47,10 @@ export class AdminController {
     const token = await this.adminLoginUseCase.execute(data);
     return fastify.res
       .setCookie("token", token.token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
         maxAge: token.remenberMe ? 3600 * 24 * 30 : 60 * 60 * 24,
       })
       .status(200)
@@ -54,7 +58,12 @@ export class AdminController {
   }
 
   async logout(fastify: FastifyContextDTO) {
-    fastify.res.clearCookie("token");
+    fastify.res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      path: "/"
+    });
     return fastify.res.status(200).send({ message: "Logout successful" });
   }
 
