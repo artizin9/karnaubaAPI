@@ -109,40 +109,7 @@ export function placeUpdate(fastify: FastifyInstance) {
 
 export function placeDelete(fastify: FastifyInstance) {
     fastify.delete('/place/delete/:id', {
-        preHandler: authMiddleware,
-        schema: {
-            summary: 'Delete a place',
-            description: 'This endpoint allows you to delete an existing place by its ID.',
-            tags: ['Place'],
-              body: {
-                type: 'object',
-                properties: {
-                    reason: { type: 'string', default: 'No reason provided' },
-                    softDelete: { type: 'boolean', default: true }
-                },
-                additionalProperties: false
-            },
-            response: {
-                200: {
-                    type: 'object',
-                    properties: {
-                        message: { type: 'string', enum: ['Place deleted successfully'] },
-                    }
-                },
-                400: {
-                    type: 'object',
-                    properties: {
-                        message: { type: 'string', enum: ['Bad Request'] },
-                    }
-                },
-                401: {
-                    type: 'object',
-                    properties: {
-                        message: { type: 'string', enum: ['Unauthorized'] },
-                    }
-                },
-            }
-        }
+        preHandler: authMiddleware}
     }, (req, res) => placeInstance.delete({ req, res }));
 }
 
