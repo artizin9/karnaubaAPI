@@ -12,6 +12,7 @@ import { staticFilesPlugin } from "./plugins/static";
 
 const server = fastify();
 
+server.register(fastifyCookie);
 server.register(fastifyCors, {
     origin: env.PORTFRONT,
     credentials: true,
@@ -26,7 +27,6 @@ server.register(fastifyRateLimit, {
     skipOnError: true,
 })
 server.register(staticFilesPlugin)
-server.register(fastifyCookie);
 server.register(fastifyMultipart, {
     limits: {
         fileSize: 5 * 1024 * 1024
