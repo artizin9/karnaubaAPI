@@ -114,12 +114,14 @@ export function placeDelete(fastify: FastifyInstance) {
             summary: 'Delete a place',
             description: 'This endpoint allows you to delete an existing place by its ID.',
             tags: ['Place'],
-             body: {
+              body: {
                 type: 'object',
-                properties: {},
-                additionalProperties: false,
-                default: {}
-          },
+                properties: {
+                    reason: { type: 'string', default: 'No reason provided' },
+                    softDelete: { type: 'boolean', default: true }
+                },
+                additionalProperties: false
+            },
             response: {
                 200: {
                     type: 'object',
