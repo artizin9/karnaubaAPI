@@ -109,7 +109,7 @@ export function placeUpdate(fastify: FastifyInstance) {
 
 export function placeDelete(fastify: FastifyInstance) {
     fastify.delete('/place/delete/:id', {
-        preHandler: authMiddleware}
+        preHandler: {authMiddleware}
     }, (req, res) => placeInstance.delete({ req, res }));
 }
 
