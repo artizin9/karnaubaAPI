@@ -2,10 +2,12 @@
   "name": "backend top",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "tsx src/infra/http/server.ts",
-    "start": "prisma generate && prisma migrate deploy && tsx src/infra/http/server.ts"
+    "build": "prisma generate && tsc && node fix-imports.mjs",
+    "start": "prisma migrate deploy && node dist/infra/http/server.js"
   },
   "keywords": [],
   "author": "",
