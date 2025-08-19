@@ -1,5 +1,3 @@
-import { Admin } from "@prisma/client"
-
 export class News {
     constructor(
         public readonly id: string,
