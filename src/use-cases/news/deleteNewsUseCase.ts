@@ -8,9 +8,7 @@ export class DeleteNewsUseCase {
 
     async execute(id: string){
         if (!id) throw new ServerError("Id is required")
+            
         const news = this.newsRepository.delete(id)
-
     }
-
-    
 }
