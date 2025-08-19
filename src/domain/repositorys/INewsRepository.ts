@@ -6,5 +6,4 @@ export interface INewsRepository {
     create(data: News): Promise<News | null>;
     update(data: Partial<News>): Promise<News | null>;
     delete(id: string): Promise<void>;
-
 }
