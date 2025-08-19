@@ -1,9 +1,9 @@
-import { IPrismaNewsRepository } from "../../infra/database/IPrismaNewsRepositoy";
+import { INewsRepository } from "../../domain/repositorys/INewsRepository";
 import { ServerError } from "../../infra/utils/serverError";
 
 export class GetAllNewsUseCase {
     constructor(
-        private newsRepository: IPrismaNewsRepository
+        private newsRepository: INewsRepository
     ){}
 
     async execute(id: string){
