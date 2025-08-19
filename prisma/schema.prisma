@@ -34,6 +34,7 @@ model Admin {
   cityId     String? @unique
   city       City?
   authorized Boolean @default(false)
+  news  News[]
 }
 
 model City {
@@ -102,4 +103,19 @@ model Photo {
 
   eventId String?
   event   Event?  @relation(fields: [eventId], references: [id])
+
+  newsId String?
+  news News? @relation(fields: [newsId], references: [id])
+}
+
+
+model News {
+  id    String @id
+  title String
+  content String
+  author String
+  date   DateTime @default(now())
+  photo Photo[]
+  adminId  String
+  admin  Admin @relation(fields: [adminId], references: [id])
 }
