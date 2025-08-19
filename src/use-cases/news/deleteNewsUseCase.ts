@@ -1,7 +1,7 @@
 import { INewsRepository } from "../../domain/repositorys/INewsRepository";
 import { ServerError } from "../../infra/utils/serverError";
 
-export class DeleteAllNewsUseCase {
+export class DeleteNewsUseCase {
     constructor(
         private newsRepository: INewsRepository
     ){}
