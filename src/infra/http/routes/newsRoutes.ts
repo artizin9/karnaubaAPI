@@ -9,3 +9,15 @@ export function createNewsRoutes(fastify: FastifyInstance){
 export function updateNewsRoutes(fastify: FastifyInstance){
     fastify.put("/news/:id", {preHandler: authMiddleware}, (req, res) => controllerNews.update({req, res}))
 }
+
+export function getAllNewsRoutes(fastify: FastifyInstance){
+    fastify.get("/news", {preHandler: authMiddleware}, (req, res) => controllerNews.getAll({req, res}))
+}
+
+export function getByIdNewsRoutes(fastify: FastifyInstance){
+    fastify.get("/news/:id", {preHandler: authMiddleware}, (req, res) => controllerNews.getById({req, res}))
+}
+
+export function deleteNewsRoutes(fastify: FastifyInstance){
+    fastify.delete("/news/:id", {preHandler: authMiddleware}, (req, res) => controllerNews.delete({req, res}))
+}
