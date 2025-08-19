@@ -31,7 +31,7 @@ export class IPrismaNewsRepository implements INewsRepository {
         return news
     }
 
-    async update(data: Partial<News>): Promise<News | null> {
+
 
     async update(data: Partial<News>, id: string): Promise<News | null> {
         const updatedNews = await prisma.news.update({
