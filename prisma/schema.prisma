@@ -111,6 +111,7 @@ model News {
   title String
   content String
   date   DateTime @default(now())
+  photo String
   adminId  String
   admin  Admin @relation(fields: [adminId], references: [id])
 }
