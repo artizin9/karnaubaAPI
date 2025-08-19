@@ -18,7 +18,7 @@ export class CreateNewsUseCase {
         if (!admin) throw new ServerError("Unauthorized", 401);
 
         const id = randomUUID()
-        const news = new News(id, data.title, data.content, admin.id, data.photoURLs, new Date())
+        const news = new News(id, data.title, data.content, admin.id, data.photoURLs, data.author, new Date())
 
         await this.newsRepository.create(news)
         return news
