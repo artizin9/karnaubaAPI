@@ -110,7 +110,6 @@ model News {
   id    String @id
   title String
   content String
-  author String
   date   DateTime @default(now())
   adminId  String
   admin  Admin @relation(fields: [adminId], references: [id])

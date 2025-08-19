@@ -5,7 +5,7 @@ export class News {
         public readonly id: string,
         public title: string,
         public content: string,
-        public author: Admin,
+        public adminId: string,
         public date: Date = new Date()
     ){}
 }
