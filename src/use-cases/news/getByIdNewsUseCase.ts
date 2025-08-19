@@ -10,7 +10,8 @@ export class GetByIdNewsUseCase {
         if (!id) throw new ServerError("Id is required")
 
         const news = this.newsRepository.getById(id)
-        
+        if (!news) throw new ServerError("Not Found", 404)
+
         return news
     }
 }

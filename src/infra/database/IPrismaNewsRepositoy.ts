@@ -3,40 +3,77 @@ import { News } from "../../domain/entities/news";
 import { INewsRepository } from "../../domain/repositorys/INewsRepository";
 
 export class IPrismaNewsRepository implements INewsRepository {
-    async getAll(): Promise<News[]> {
-        const news = await prisma.news.findMany()
+  async getAll(): Promise<News[]> {
+    return await prisma.news.findMany({
+      include: {
+        photo: true
+      },
+      orderBy: {
+        date: "desc"
+      }
+    });
+  }
 
-        return news
-    }
+  async getById(id: string): Promise<News | null> {
+    return await prisma.news.findUnique({
+      where: { id },
+      include: {
+        photo: true
+      }
+    });
+  }
 
-    async getById(id: string): Promise<News | null> {
-        const news = await prisma.news.findUnique({
-            where: { id },
-        })
+  async delete(id: string): Promise<void> {
+    await prisma.news.delete({
+      where: { id },
+    });
+  }
 
-        return news
-    }
+  async create(data: News): Promise<News | null> {
+    return await prisma.news.create({
+      data: {
+        id: data.id,
+        title: data.title,
+        content: data.content,
+        adminId: data.adminId,
+        author: data.author,
+        date: data.date,
+        photo: data.photo?.length
+          ? {
+              create: data.photo.map(p => ({
+                id: p.id,
+                url: p.url
+              }))
+            }
+          : undefined
+      },
+      include: {
+        photo: true
+      }
+    });
+  }
 
-    async delete(id: string): Promise<void> {
-        await prisma.news.delete({
-            where: { id },
-        })
-    }
+  async update(data: Partial<News>, id: string): Promise<News | null> {
+    // Atualização inteligente das fotos
+    const photoData = data.photo?.length
+      ? {
+          deleteMany: {}, // Remove as antigas (substituição completa)
+          create: data.photo.map(p => ({ id: p.id, url: p.url }))
+        }
+      : undefined;
 
-    async create(data: News): Promise<News | null> {
-        const news = await prisma.news.create({
-            data: {...data}
-        })
-
-        return news
-    }
-
-    async update(data: Partial<News>, id: string): Promise<News | null> {
-        const updatedNews = await prisma.news.update({
-            where: {id},
-            data: {...data}
-        })
-
-        return updatedNews
-    }
+    return await prisma.news.update({
+      where: { id },
+      data: {
+        title: data.title,
+        content: data.content,
+        author: data.author,
+        date: data.date,
+        photo: photoData
+      },
+      include: {
+        photo: true
+      }
+    });
+  }
 }

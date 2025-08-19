@@ -103,6 +103,9 @@ model Photo {
 
   eventId String?
   event   Event?  @relation(fields: [eventId], references: [id])
+
+  newsId String?
+  news News? @relation(fields: [newsId], references: [id])
 }
 
 
@@ -112,7 +115,7 @@ model News {
   content String
   author String
   date   DateTime @default(now())
-  photo String
+  photo Photo[]
   adminId  String
   admin  Admin @relation(fields: [adminId], references: [id])
 }

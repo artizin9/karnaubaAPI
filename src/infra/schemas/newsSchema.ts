@@ -3,9 +3,8 @@ import { z } from "zod";
 export const newsSchema = z.object({ 
   title: z.string().min(3, "Título muito curto"),
   content: z.string().min(10, "Conteúdo muito curto"),
-  adminId: z.string().uuid(),
   author: z.string(),
-  photoURLs: z.string(),
+  photoURLs: z.array(z.string()).default([]),
   date: z.date().default(() => new Date())
 });
 

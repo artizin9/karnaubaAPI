@@ -1,3 +1,5 @@
+import { PhotoDTO } from "../../infra/dto/photoDTO";
+
 export class News {
     constructor(
         public readonly id: string,
@@ -5,7 +7,7 @@ export class News {
         public content: string,
         public adminId: string,
         public author: string,
-        public photo: string,
+        public photo: PhotoDTO[],
         public date: Date = new Date()
     ){}
 }

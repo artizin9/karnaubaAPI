@@ -16,9 +16,14 @@ export class CreateNewsUseCase {
 
         const admin = req.user;
         if (!admin) throw new ServerError("Unauthorized", 401);
+        
+        const photo = (data.photoURLs && Array.isArray(data.photoURLs) ? data.photoURLs : []).map(url => ({
+            id: randomUUID(),
+            url
+        }));
 
         const id = randomUUID()
-        const news = new News(id, data.title, data.content, admin.id, data.photoURLs, data.author, new Date())
+        const news = new News(id, data.title, data.content, admin.id, data.author, photo, new Date())
 
         await this.newsRepository.create(news)
         return news

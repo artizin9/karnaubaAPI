@@ -9,7 +9,7 @@ export class UpdateNewsUseCase {
     ){}
 
     async execute(data: NewsSchema, id: string){
-        const parsedData = newsSchema.safeParse(data);
+        const parsedData = newsSchema.partial().safeParse(data);
         if (!parsedData.success) throw new ServerError("Bad Request");
 
         const isNewsExist = await this.newsRepository.getById(id);
