@@ -3,6 +3,7 @@ import { DeleteNewsUseCase } from "../../../use-cases/news/deleteNewsUseCase";
 import { GetAllNewsUseCase } from "../../../use-cases/news/getAllNewsUseCase";
 import { GetByIdNewsUseCase } from "../../../use-cases/news/getByIdNewsUseCase";
 import { UpdateNewsUseCase } from "../../../use-cases/news/updateNewsUseCase";
+import { UpdatePhotoNewsUseCase } from "../../../use-cases/news/updatePhotoNewsUseCase";
 import { FastifyContextDTO } from "../../dto/fastifyContextDTO";
 import { Multipart } from "../plugins/multipart";
 
@@ -13,7 +14,8 @@ export class NewsController {
         private readonly updateNewsUseCase: UpdateNewsUseCase,
         private readonly getAllNewsUseCase: GetAllNewsUseCase,
         private readonly getByIdNewsUseCase: GetByIdNewsUseCase,
-        private readonly deleteNewsUseCase: DeleteNewsUseCase
+        private readonly deleteNewsUseCase: DeleteNewsUseCase,
+        private readonly updatePhotoNewsUseCase: UpdatePhotoNewsUseCase
 
     ) { }
 
@@ -45,6 +47,13 @@ export class NewsController {
         const { id } = fastify.req.params as { id: string }
         const news = await this.deleteNewsUseCase.execute(id)
         fastify.res.status(200).send({ Message: "Notícia deletada com sucesso" })
+    }
+
+    async updtePhoto(fastify: FastifyContextDTO) {
+        const { id } = fastify.req.params as { id: string }
+        const data = await this.multipart.handleDataMultipart(fastify.req, 'news', true)
+        await this.updatePhotoNewsUseCase.execute(data, id)
+        fastify.res.status(200).send({ Message: "Notícia atualizada com sucesso" })
     }
 }
 
