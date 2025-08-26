@@ -2,7 +2,7 @@
   "name": "backend top",
   "version": "1.0.0",
   "description": "",
-"type": "module",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "tsx src/infra/http/server.ts",
@@ -32,6 +32,7 @@
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^7.0.3",
+    "replace-in-file": "^8.3.0",
     "zod": "^3.25.26",
     "zod-to-json-schema": "^3.24.5"
   },
