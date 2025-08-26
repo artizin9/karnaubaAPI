@@ -1,3 +1,4 @@
+import { Photo } from "@prisma/client";
 import { prisma } from "../../config/prisma";
 import { News } from "../../domain/entities/news";
 import { INewsRepository } from "../../domain/repositorys/INewsRepository";
@@ -76,4 +77,23 @@ export class IPrismaNewsRepository implements INewsRepository {
       }
     });
   }
+
+      async updatePhoto(photoId: string, photoURLs: string): Promise<Photo> {
+          const photo = await prisma.photo.update({
+              where: { id: photoId },
+              data: {
+                  url: photoURLs
+              }
+          })
+  
+          return photo
+      }
+  
+      async findPhoto(photoId: string): Promise<Photo | null> {
+          const photo = await prisma.photo.findUnique({
+              where: { id: photoId }
+          })
+  
+          return photo;
+      }
 }

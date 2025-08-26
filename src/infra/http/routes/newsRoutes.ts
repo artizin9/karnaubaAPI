@@ -21,3 +21,7 @@ export function getByIdNewsRoutes(fastify: FastifyInstance){
 export function deleteNewsRoutes(fastify: FastifyInstance){
     fastify.delete("/news/:id", {preHandler: authMiddleware}, (req, res) => controllerNews.delete({req, res}))
 }
+
+export function updatePhotoNewsRoutes(fastify: FastifyInstance){
+    fastify.put('/news/photo/:id', {preHandler: authMiddleware}, (req, res) => controllerNews.updtePhoto({req, res}))
+}
