@@ -8,6 +8,7 @@ export class UpdatePhotoNewsUseCase {
     ) { }
 
     async execute(id: string, photoURLs: string) {
+                console.log("id: ", id)
         const parsedData = photoSchema.safeParse({ photoURLs });
         console.log("data: ", parsedData.data)
         if (!parsedData.success) throw new ServerError("Bad request");
