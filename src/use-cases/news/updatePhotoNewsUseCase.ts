@@ -9,9 +9,11 @@ export class UpdatePhotoNewsUseCase {
 
     async execute(id: string, photoURLs: string) {
         const parsedData = photoSchema.safeParse({ photoURLs });
+        console.log("data: ", parsedData.data)
         if (!parsedData.success) throw new ServerError("Bad request");
 
         const isPhotoExist = await this.newsRepository.findPhoto(id);
+        console.log("isphoto: ", isPhotoExist)
         if (!isPhotoExist) throw new ServerError("Photo not found", 404);
 
         const updatedPhoto = await this.newsRepository.updatePhoto(id, photoURLs);
