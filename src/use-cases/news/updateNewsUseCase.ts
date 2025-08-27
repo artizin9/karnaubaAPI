@@ -9,6 +9,7 @@ export class UpdateNewsUseCase {
     ) { }
 
     async execute(data: NewsSchema, id: string) {
+        console.log("id: ", id)
         const parsedData = newsSchemaUpdate.partial().safeParse(data);
         if (!parsedData.success) throw new ServerError("Bad Request");
 
