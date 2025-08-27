@@ -52,7 +52,7 @@ export class NewsController {
     async updtePhoto(fastify: FastifyContextDTO) {
         const { id } = fastify.req.params as { id: string }
         const data = await this.multipart.handleDataMultipart(fastify.req, 'news', true)
-        await this.updatePhotoNewsUseCase.execute(data, id)
+        await this.updatePhotoNewsUseCase.execute(id, data)
         fastify.res.status(200).send({ Message: "Notícia atualizada com sucesso" })
     }
 }
