@@ -17,6 +17,7 @@ export class IPrismaPlaceRepository implements IPlaceRepository {
                 instagram: data.instagram,
                 latitude: data.latitude,
                 longitude: data.longitude,
+                subLocation: data.subLocation,
                 photos: {
                     create: data.photos?.map(photo => ({
                         id: photo.id,
@@ -41,6 +42,7 @@ export class IPrismaPlaceRepository implements IPlaceRepository {
                 location: data.location,
                 description: data.description,
                 instagram: data.instagram,
+                subLocation: data.subLocation,
                 phone: data.phone ?? null,
                 category: data.category,
                 latitude: data.latitude,
@@ -127,51 +129,50 @@ export class IPrismaPlaceRepository implements IPlaceRepository {
     }
 
     async deletePhoto(id: string): Promise<void> {
-            await prisma.photo.delete({
-                where: {id}
-            })
+        await prisma.photo.delete({
+            where: { id }
+        })
     }
 
-   async getRelatedPlacesById(id: string): Promise<Place[]> {
-    const origin = await prisma.place.findUnique({ where: { id } })
+    async getRelatedPlacesById(id: string): Promise<Place[]> {
+        const origin = await prisma.place.findUnique({ where: { id } })
 
-    if (!origin) throw new ServerError('Place not Found', 404)
+        if (!origin) throw new ServerError('Place not Found', 404)
 
-    const { latitude: originLat, longitude: originLon, category } = origin
-    if (originLat == null || originLon == null) throw new ServerError('Latitude and Longitude are required')
-    
+        const { latitude: originLat, longitude: originLon, category } = origin
+        if (originLat == null || originLon == null) throw new ServerError('Latitude and Longitude are required')
 
-    const candidates = await prisma.place.findMany({
-      where: {
-        category,
-        latitude: { not: null },
-        longitude: { not: null },
-        NOT: { id },
-      },
-    })
 
-    const related: PlaceWithDistance[] = candidates.map((place) => ({
-      ...place,
-      distance: haversineDistance(
-        originLat,
-        originLon,
-        place.latitude!,
-        place.longitude!
-      ),
-    }))
+        const candidates = await prisma.place.findMany({
+            where: {
+                category,
+                latitude: { not: null },
+                longitude: { not: null },
+                NOT: { id },
+            },
+        })
 
-    return related.sort((a, b) => a.distance - b.distance)
-  }
+        const related: PlaceWithDistance[] = candidates.map((place) => ({
+            ...place,
+            distance: haversineDistance(
+                originLat,
+                originLon,
+                place.latitude!,
+                place.longitude!
+            ),
+        }))
 
-  async getPlacesByCategoryExcludingId(category: string, excludeId: string): Promise<Place[]> {
-    return prisma.place.findMany({
-      where: {
-        category: category as any,
-        latitude: { not: null },
-        longitude: { not: null },
-        NOT: { id: excludeId },
-      },
-    })
-}
+        return related.sort((a, b) => a.distance - b.distance)
+    }
 
+    async getPlacesByCategoryExcludingId(category: string, excludeId: string): Promise<Place[]> {
+        return prisma.place.findMany({
+            where: {
+                category: category as any,
+                latitude: { not: null },
+                longitude: { not: null },
+                NOT: { id: excludeId },
+            },
+        })
+    }
 }
