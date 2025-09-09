@@ -3,6 +3,9 @@ import { PhotoStorageService } from "../../services/photoStorageService";
 import { PhotoStorageType } from "../../dto/photoStorageDTO";
 import { VideoStorageService } from "../../services/videoStorageService";
 import { ServerError } from "../../utils/serverError";
+import { Readable } from "stream";
+import ffmpeg from "fluent-ffmpeg";
+import ffprobe from "@ffprobe-installer/ffprobe";
 
 export class Multipart {
     constructor(private photoStorage: PhotoStorageService, private videoStorage: VideoStorageService) { };
@@ -30,15 +33,25 @@ export class Multipart {
     async handleVideoMultipart(req: FastifyRequest) {
         const video = await req.file()
         if (!video) throw new ServerError("Video not found")
-        
+
         const buffer = await video.toBuffer()
         const { filename, mimetype } = video
 
+        const stream = Readable.from(buffer)
+        const duration = await new Promise<number>((resolve, reject) => {
+            ffmpeg(stream)
+                .inputFormat(mimetype?.split("/")[1])
+                .ffprobe((err, metadata) => {
+                    if (err) return reject(err);
+                    resolve(metadata.format.duration || 0);
+                });
+        });
         const url = await this.videoStorage.save({ buffer, filename, mimetype })
 
         return {
-            url: url,
-            filename: filename
-        } 
+            url,
+            filename,
+            duration
+        }
     }
 }

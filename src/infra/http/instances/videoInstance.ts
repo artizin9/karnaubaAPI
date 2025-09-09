@@ -2,6 +2,7 @@ import { CreateVideoUseCase } from "../../../use-cases/videos/createVideoUseCase
 import { DeleteVideoUseCase } from "../../../use-cases/videos/deleteVideoUseCase";
 import { GetAllVideoUseCase } from "../../../use-cases/videos/getAllVideoUseCase";
 import { GetIdVideoUseCase } from "../../../use-cases/videos/getIdVideoUseCase";
+import { GetWatchUseCase } from "../../../use-cases/videos/getVideoWatchUseCase";
 import { UpdateVideoUseCase } from "../../../use-cases/videos/updateVideoUseCase";
 import { IPrismaVideoRepository } from "../../database/IPrismaVideoRepository";
 import { PhotoStorageService } from "../../services/photoStorageService";
@@ -24,6 +25,7 @@ const deleteVideoUseCase = new DeleteVideoUseCase(
   videoStorage
 );
 const videoGetUniqueUseCase = new GetIdVideoUseCase(videoRepository);
+const videoWatchUseCase = new GetWatchUseCase();
 
 export const videoInstance = new VideoController(
   createVideoUseCase,
@@ -31,5 +33,6 @@ export const videoInstance = new VideoController(
   deleteVideoUseCase,
   videoGetUniqueUseCase,
   videoGetAllUseCase,
+  videoWatchUseCase,
   multipart
 );

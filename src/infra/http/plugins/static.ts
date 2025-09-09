@@ -8,8 +8,15 @@ const __dirname = dirname(__filename);
 
 export async function staticFilesPlugin(fastify: FastifyInstance) {
     const pathToUploads = join(__dirname, '..', '..', '..', '..', 'uploads');
+    const videosPath = join(__dirname, '..', '..', '..', '..', 'videos');
+
     fastify.register(fastifyStatic, {
         root: pathToUploads,
         prefix: '/uploads/',
     });
+    fastify.register(fastifyStatic, {
+        root: videosPath,
+        prefix: '/videos/', 
+    });
 }
+

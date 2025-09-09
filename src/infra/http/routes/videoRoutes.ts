@@ -6,12 +6,12 @@ export function createVideo(fastify: FastifyInstance){
     fastify.post("/video", {preHandler: authMiddleware}, (req, res) => videoInstance.create({req, res}));
 }
 
-export function findAllVideo(fastify: FastifyInstance){
+export function getAllVideo(fastify: FastifyInstance){
     fastify.get("/video", (req, res) => videoInstance.getAll({req, res}));
 }
 
-export function findUniqueVideo(fastify: FastifyInstance){
-    fastify.get("/video/:unique", (req, res) => videoInstance.getUnique({req, res}));
+export function getIdVideo(fastify: FastifyInstance){
+    fastify.get("/video/:id", (req, res) => videoInstance.getUnique({req, res}));
 }
 
 export function updateVideo(fastify: FastifyInstance){
@@ -20,5 +20,9 @@ export function updateVideo(fastify: FastifyInstance){
 
 export function deleteVideo(fastify: FastifyInstance){
     fastify.delete("/video/:id", {preHandler: authMiddleware}, (req, res) => videoInstance.delete({req, res}));
+}
+
+export function watchVideo(fastify: FastifyInstance){
+    fastify.get('video/:filename', (req, res) => videoInstance.getWatch({req, res}))
 }
 
