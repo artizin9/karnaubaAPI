@@ -13,10 +13,12 @@ export async function staticFilesPlugin(fastify: FastifyInstance) {
     fastify.register(fastifyStatic, {
         root: pathToUploads,
         prefix: '/uploads/',
+        decorateReply: false
     });
     fastify.register(fastifyStatic, {
         root: videosPath,
         prefix: '/videos/', 
+        decorateReply: false
     });
 }
 
