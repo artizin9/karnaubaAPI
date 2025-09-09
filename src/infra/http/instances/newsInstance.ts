@@ -6,12 +6,14 @@ import { UpdateNewsUseCase } from "../../../use-cases/news/updateNewsUseCase";
 import { UpdatePhotoNewsUseCase } from "../../../use-cases/news/updatePhotoNewsUseCase";
 import { IPrismaNewsRepository } from "../../database/IPrismaNewsRepositoy";
 import { PhotoStorageService } from "../../services/photoStorageService";
+import { VideoStorageService } from "../../services/videoStorageService";
 import { NewsController } from "../controllers/newsController";
 import { Multipart } from "../plugins/multipart";
 
 const prismaRepository = new IPrismaNewsRepository();
 const photoStorage = new PhotoStorageService();
-const multipart = new Multipart(photoStorage);
+const videoStorage = new VideoStorageService();
+const multipart = new Multipart(photoStorage, videoStorage);
 
 const createNewsUseCase = new CreateNewsUseCase(prismaRepository)
 const updateNewsUseCase = new UpdateNewsUseCase(prismaRepository)

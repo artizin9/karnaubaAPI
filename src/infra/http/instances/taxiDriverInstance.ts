@@ -7,6 +7,7 @@ import { IPrismaAdminReposotory } from "../../database/IPrismaAdminRepository";
 import { IPrismaCityRepository } from "../../database/IPrismaCityRepository";
 import { IPrismaTaxiDriverRepository } from "../../database/IPrismaTaxiDriverRepository";
 import { PhotoStorageService } from "../../services/photoStorageService";
+import { VideoStorageService } from "../../services/videoStorageService";
 import { taxiDriverController } from "../controllers/taxiDriverController";
 import { Multipart } from "../plugins/multipart";
 
@@ -14,7 +15,8 @@ const taxiDriverRepository = new IPrismaTaxiDriverRepository();
 const adminRepository = new IPrismaAdminReposotory();
 const photoStorage = new PhotoStorageService();
 const cityRepository = new IPrismaCityRepository();
-const multipart = new Multipart(photoStorage);
+const videoStorage = new VideoStorageService();
+const multipart = new Multipart(photoStorage, videoStorage);
 
 const taxiDriverCreateUseCase = new TaxiDriverCreateUseCase(taxiDriverRepository, adminRepository, cityRepository );
 const taxiDriverFindAllUseCase = new TaxiDriverFindAllUseCase(taxiDriverRepository);

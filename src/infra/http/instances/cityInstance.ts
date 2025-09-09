@@ -11,6 +11,7 @@ import { PhotoStorageService } from "../../services/photoStorageService";
 import { CityController } from "../controllers/cityController";
 import { Multipart } from "../plugins/multipart";
 import { IPrismaAdminReposotory } from "../../database/IPrismaAdminRepository";
+import { VideoStorageService } from "../../services/videoStorageService";
 
 const prismaCityRepository = new IPrismaCityRepository();
 const prismaAdminRepository = new IPrismaAdminReposotory();
@@ -23,6 +24,7 @@ const cityFindUniqueUseCase = new CityFindUniqueUseCase(prismaCityRepository, pr
 const cityUpdatePhotoUseCase = new CityUpdatePhotoUseCase(prismaCityRepository);
 const cityCreatePhotoUseCase = new CityCreatePhotoUseCase(prismaCityRepository, prismaAdminRepository);
 const cityDeletePhotoUseCase = new CityDeletePhotoUseCase(prismaCityRepository);
-const multipart = new Multipart(photoStorageService);
+const videoStorage = new VideoStorageService();
+const multipart = new Multipart(photoStorageService, videoStorage);
 
 export const cityInstance = new CityController(multipart, cityCreateUseCase, cityUpdateUseCase, cityDeleteUseCase, cityFindUniqueUseCase, cityFindAllUseCase, cityUpdatePhotoUseCase, cityCreatePhotoUseCase, cityDeletePhotoUseCase);
