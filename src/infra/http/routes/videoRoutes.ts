@@ -23,6 +23,6 @@ export function deleteVideo(fastify: FastifyInstance){
 }
 
 export function watchVideo(fastify: FastifyInstance){
-    fastify.get('video/:filename', (req, res) => videoInstance.getWatch({req, res}))
+    fastify.get('video/watch/:filename', (req, res) => videoInstance.getWatch({req, res}))
 }
 
