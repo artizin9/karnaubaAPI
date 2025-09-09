@@ -17,7 +17,6 @@ export class PlaceCreateUseCase {
 
     async execute(data: placeDTO, req: FastifyRequest){
         const parsedData = placeSchema.safeParse(data);
-        console.log(parsedData.error)
         if (!parsedData.success) throw new ServerError("Bad Request");
         
 

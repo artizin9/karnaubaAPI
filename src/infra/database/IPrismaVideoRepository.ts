@@ -9,9 +9,14 @@ export class IPrismaVideoRepository implements IVideoRepository {
         return videos;
     }
 
+    async getId(id: string): Promise<Video> {
+        const video = await prisma.video.findUnique({ where: { id }});
+        return video
+    }
+
     async create(data: Video): Promise<Video | null> {
         const video = await prisma.video.create({
-            data: { ...data}
+            data: { ...data, filename: data.filename}
         })
 
         return video;
@@ -26,11 +31,8 @@ export class IPrismaVideoRepository implements IVideoRepository {
         return video
 }
 
-    async delete(options: { id?: string; filename?: string }): Promise<void> {
-        if (options.id) {
+    async delete(id: string): Promise<void> {
             await prisma.video.delete({
-                where: {id: options.id}
+                where: { id }
             })
-        }
-
 }}

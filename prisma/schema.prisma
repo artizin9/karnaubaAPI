@@ -136,6 +136,7 @@ model Video {
   title       String   
   description String?  
   url         String  
+  filename    String
   duration    Float?   
   uploadedAt  DateTime @default(now())
 }

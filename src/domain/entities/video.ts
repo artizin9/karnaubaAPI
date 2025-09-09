@@ -4,6 +4,7 @@ export class Video {
         public title: string,
         public description: string | null,
         public url: string,
+        public filename: string,
         public duration: number | null,
     ) {}
 }
