@@ -130,3 +130,12 @@ model News {
   adminId  String
   admin  Admin @relation(fields: [adminId], references: [id])
 }
+
+model Video {
+  id          String   @id
+  title       String   
+  description String?  
+  url         String  
+  duration    Float?   
+  uploadedAt  DateTime @default(now())
+}
