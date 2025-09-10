@@ -29,7 +29,7 @@ server.register(fastifyRateLimit, {
 server.register(staticFilesPlugin)
 server.register(fastifyMultipart, {
     limits: {
-        fileSize: 5 * 1024 * 1024
+        fileSize: 1000 * 1024 * 1024
     }
 });
 server.register(helmet, {

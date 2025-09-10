@@ -2,7 +2,6 @@ import { CreateVideoUseCase } from "../../../use-cases/videos/createVideoUseCase
 import { DeleteVideoUseCase } from "../../../use-cases/videos/deleteVideoUseCase";
 import { GetAllVideoUseCase } from "../../../use-cases/videos/getAllVideoUseCase";
 import { GetIdVideoUseCase } from "../../../use-cases/videos/getIdVideoUseCase";
-import { GetWatchUseCase } from "../../../use-cases/videos/getVideoWatchUseCase";
 import { UpdateVideoUseCase } from "../../../use-cases/videos/updateVideoUseCase";
 import { FastifyContextDTO } from "../../dto/fastifyContextDTO";
 import { Multipart } from "../plugins/multipart";
@@ -14,7 +13,6 @@ export class VideoController {
         private videoDelete: DeleteVideoUseCase,
         private videoGetUnique: GetIdVideoUseCase,
         private videoGetAll: GetAllVideoUseCase,
-        private videoWatch: GetWatchUseCase,
         private multipart: Multipart
     ) { }
 
@@ -49,26 +47,5 @@ export class VideoController {
     async getAll(fastify: FastifyContextDTO) {
         const videos = await this.videoGetAll.execute()
         fastify.res.send({ Message: "Videos encontrados", videos })
-    }
-
-    async getWatch(fastify: FastifyContextDTO) {
-        const { filename } = fastify.req.params as { filename: string }
-        const { start, end, fileSize, chunkSize, stream } = await this.videoWatch.execute(filename, fastify.req)
-        
-        console.log(stream)
-        fastify.res.code(206).headers({
-        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-        "Accept-Ranges": "bytes",
-        "Content-Length": chunkSize,
-        "Content-Type": "video/mp4",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Range",
-        "Access-Control-Expose-Headers": "Content-Range, Accept-Ranges, Content-Length"
-    });
-
-    stream.pipe(fastify.res.raw);
-
-    stream.on("end", () => fastify.res.raw.end());
-    stream.on("error", (err) => fastify.res.send(new Error("Erro no stream: " + err.message)));
     }
 }
