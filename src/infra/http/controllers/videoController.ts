@@ -54,12 +54,21 @@ export class VideoController {
     async getWatch(fastify: FastifyContextDTO) {
         const { filename } = fastify.req.params as { filename: string }
         const { start, end, fileSize, chunkSize, stream } = await this.videoWatch.execute(filename, fastify.req)
-
+        
+        console.log(stream)
         fastify.res.code(206).headers({
-            "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-            "Accept-Ranges": "bytes",
-            "Content-Length": chunkSize,
-            "Content-Type": "video/mp4",
-        }).send(stream)
+        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": chunkSize,
+        "Content-Type": "video/mp4",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Range",
+        "Access-Control-Expose-Headers": "Content-Range, Accept-Ranges, Content-Length"
+    });
+
+    stream.pipe(fastify.res.raw);
+
+    stream.on("end", () => fastify.res.raw.end());
+    stream.on("error", (err) => fastify.res.send(new Error("Erro no stream: " + err.message)));
     }
 }
