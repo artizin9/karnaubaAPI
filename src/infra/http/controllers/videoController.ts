@@ -20,7 +20,7 @@ export class VideoController {
 
     async create(fastify: FastifyContextDTO) {
         const video = await this.multipart.handleVideoMultipart(fastify.req)
-        const data = await this.videoCreate.execute(video)
+        const data = await this.videoCreate.execute(video.rawFields, video.duration, video.fileName)
         fastify.res.status(201).send({ Message: "Video criado com sucesso", data })
     }
 

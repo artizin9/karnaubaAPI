@@ -138,5 +138,5 @@ model Video {
   url         String  
   filename    String
   duration    Float?   
-  uploadedAt  DateTime @default(now())
+  createdAt  DateTime @default(now())
 }
