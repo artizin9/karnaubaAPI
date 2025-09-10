@@ -81,6 +81,9 @@ importers:
         specifier: ^3.24.5
         version: 3.24.5(zod@3.25.26)
     devDependencies:
+      '@types/fluent-ffmpeg':
+        specifier: ^2.1.27
+        version: 2.1.27
       '@types/jsonwebtoken':
         specifier: ^9.0.9
         version: 9.0.9
@@ -596,6 +599,9 @@ packages:
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
+
+  '@types/fluent-ffmpeg@2.1.27':
+    resolution: {integrity: sha512-QiDWjihpUhriISNoBi2hJBRUUmoj/BMTYcfz+F+ZM9hHWBYABFAE6hjP/TbCZC0GWwlpa3FzvHH9RzFeRusZ7A==}
 
   '@types/jsonwebtoken@9.0.9':
     resolution: {integrity: sha512-uoe+GxEuHbvy12OUQct2X9JenKM3qAscquYymuQN4fMWG9DBQtykrQEFcAbVACF7qaLw9BePSodUL0kquqBJpQ==}
@@ -2008,6 +2014,10 @@ snapshots:
   '@tokenizer/token@0.3.0': {}
 
   '@types/estree@1.0.7': {}
+
+  '@types/fluent-ffmpeg@2.1.27':
+    dependencies:
+      '@types/node': 22.15.21
 
   '@types/jsonwebtoken@9.0.9':
     dependencies:
