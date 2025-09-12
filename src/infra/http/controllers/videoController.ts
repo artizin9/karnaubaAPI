@@ -5,8 +5,6 @@ import { GetIdVideoUseCase } from "../../../use-cases/videos/getIdVideoUseCase";
 import { UpdateVideoUseCase } from "../../../use-cases/videos/updateVideoUseCase";
 import { FastifyContextDTO } from "../../dto/fastifyContextDTO";
 import { Multipart } from "../plugins/multipart";
-import { createReadStream, statSync } from "fs";
-import { join } from "path";
 
 export class VideoController {
     constructor(
@@ -50,33 +48,4 @@ export class VideoController {
         const videos = await this.videoGetAll.execute()
         fastify.res.send({ Message: "Videos encontrados", videos })
     }
-<<<<<<< HEAD
-
-async getWatch(fastify: FastifyContextDTO) {
-    const { filename } = fastify.req.params as { filename: string };
-    const videoPath = join(process.cwd(), "videos", filename);
-
-    try {
-        const stat = statSync(videoPath);
-        const fileSize = stat.size;
-
-        const stream = createReadStream(videoPath);
-
-        fastify.res
-            .code(200)
-            .headers({
-                "Content-Length": fileSize,
-                "Content-Type": "video/mp4",
-                // "Content-Disposition" removido para permitir streaming
-            })
-            .send(stream);
-    } catch (err) {
-        fastify.res.code(404).send({ message: "Video not found" });
-    }
 }
-
-}
-
-=======
-}
->>>>>>> 55f7a8eb5aeca981060822d9c84fbf991bd9f681

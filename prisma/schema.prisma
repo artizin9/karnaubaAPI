@@ -7,12 +7,122 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model TaxiDriver {
+  id                 String @id
+  name               String
+  photoURLs          String
+  phone              String
+  workingDescription String
+  cityId             String
+  city               City   @relation(fields: [cityId], references: [id])
+}
+
+model Admin {
+  id         String  @id
+  name       String
+  email      String  @unique
+  password   String?
+  googleId   String? @unique
+  authorized Boolean @default(false)
+  cityId     String? @unique
+  city       City?
+  news       News[]
+}
+
+model City {
+  id          String       @id
+  name        String
+  location    String
+  description String
+  instagram   String?
+  adminId     String       @unique
+  admin       Admin        @relation(fields: [adminId], references: [id])
+  events      Event[]
+  photos      Photo[]
+  places      Place[]
+  taxiDrivers TaxiDriver[]
+}
+
+model Place {
+  id          String      @id
+  name        String
+  phone       String?
+  instagram   String?
+  location    String
+  description String
+  category    Category
+  cityId      String
+  latitude    Float?
+  longitude   Float?
+  subLocation SubLocation @default(SEDE)
+  photos      Photo[]
+  city        City        @relation(fields: [cityId], references: [id])
+  rooms       Room[]
+}
+
+model Room {
+  id          String   @id
+  price       Float
+  available   Boolean  @default(true)
+  placeId     String
+  description String?
+  photoURLs   String[]
+  place       Place    @relation(fields: [placeId], references: [id])
+}
+
+model Event {
+  id          String   @id
+  name        String
+  date        DateTime
+  active      Boolean
+  instagram   String?
+  description String
+  cityId      String
+  lastDate    DateTime
+  location    String
+  city        City     @relation(fields: [cityId], references: [id])
+  photos      Photo[]
+}
+
+model Photo {
+  id      String  @id
+  url     String
+  cityId  String?
+  placeId String?
+  eventId String?
+  newsId  String?
+  city    City?   @relation(fields: [cityId], references: [id])
+  event   Event?  @relation(fields: [eventId], references: [id])
+  news    News?   @relation(fields: [newsId], references: [id])
+  place   Place?  @relation(fields: [placeId], references: [id])
+}
+
+model News {
+  id      String   @id
+  title   String
+  content String
+  date    DateTime @default(now())
+  adminId String
+  author  String
+  admin   Admin    @relation(fields: [adminId], references: [id])
+  photo   Photo[]
+}
+
+model Video {
+  id          String   @id
+  title       String
+  description String?
+  url         String
+  duration    Float?
+  filename    String
+  createdAt   DateTime @default(now())
+}
+
 enum SubLocation {
   SEDE
-  PÉ_DA_SERRA
-  VÁRZEA_DA_CRUZ
+  PE_DA_SERRA
+  VARZEA_DA_CRUZ
   MIRIM
-  GREGÓRIO
   CONTENDAS
   TANGENTE
   AIUA
@@ -34,7 +144,6 @@ enum SubLocation {
   MORGADO
   PASSAGEM
   PAUS_BRANCO
-  PE_DA_SERRA
   RAIZ
   RIACHAO_DOS_FARIAS
   RIACHO_FUNDO
@@ -60,120 +169,4 @@ enum Category {
   TOURIST_ATTRACTIONS
   LANDSCAPE
   HOSTING
-}
-
-model TaxiDriver {
-  id        String  @id
-  name       String
-  photoURLs String
-  phone    String
-  workingDescription String
-  cityId     String
-  city       City?   @relation(fields: [cityId], references: [id])
-}
-
-model Admin {
-  id         String  @id
-  name       String
-  email      String  @unique
-  password   String?
-  googleId   String? @unique
-  cityId     String? @unique
-  city       City?
-  authorized Boolean @default(false)
-  news  News[]
-}
-
-model City {
-  id          String  @id
-  name        String
-  location    String
-  description String
-  photos      Photo[]
-  instagram   String?
-  places      Place[]
-  events      Event[]
-  adminId     String  @unique
-  admin       Admin   @relation(fields: [adminId], references: [id])
-  taxiDrivers TaxiDriver[]
-}
-
-model Place {
-  id          String   @id
-  name        String
-  phone       String?
-  instagram   String?
-  location    String
-  latitude    Float?
-  longitude   Float?
-
-  description String
-  subLocation SubLocation @default(SEDE)
-  photos      Photo[]
-  category    Category
-  cityId      String
-  city        City     @relation(fields: [cityId], references: [id])
-  rooms       Room[]
-}
-
-model Room {
-  id          String   @id
-  price       Float
-  available   Boolean @default(true)
-  placeId     String
-  place       Place    @relation(fields: [placeId], references: [id])
-  photoURLs   String[]
-  description String?
-}
-
-model Event {
-  id          String   @id
-  name        String
-  date        DateTime
-  location    String
-  lastDate    DateTime
-  active      Boolean
-  instagram   String?
-  description String
-  photos      Photo[]
-  cityId      String
-  city        City     @relation(fields: [cityId], references: [id])
-}
-
-model Photo {
-  id     String  @id
-  url    String
-  cityId String?
-  city   City?   @relation(fields: [cityId], references: [id])
-
-  placeId String?
-  place   Place?  @relation(fields: [placeId], references: [id])
-
-  eventId String?
-  event   Event?  @relation(fields: [eventId], references: [id])
-
-  newsId String?
-  news News? @relation(fields: [newsId], references: [id])
-}
-
-
-model News {
-  id    String @id
-  title String
-  content String
-  author String
-  date   DateTime @default(now())
-  photo Photo[]
-  adminId  String
-  admin  Admin @relation(fields: [adminId], references: [id])
-}
-
-model Video {
-  id          String   @id
-  title       String   
-  description String?  
-  url         String  
-  filename    String
-  duration    Float?   
-  createdAt  DateTime @default(now())
 }

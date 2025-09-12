@@ -5,19 +5,10 @@ import { VideoStorageService } from "../../services/videoStorageService";
 import { Readable } from "stream";
 import ffmpeg from "fluent-ffmpeg";
 import ffmpegPath from "@ffmpeg-installer/ffmpeg";
-<<<<<<< HEAD
 import ffprobePath from "@ffprobe-installer/ffprobe"
 
 ffmpeg.setFfmpegPath(ffmpegPath.path);
 ffmpeg.setFfprobePath(ffprobePath.path);
-=======
-import ffprobePath from "@ffprobe-installer/ffprobe";
-
-// Configura os paths do ffmpeg/ffprobe
-ffmpeg.setFfmpegPath(ffmpegPath.path);
-ffmpeg.setFfprobePath(ffprobePath.path);
-
->>>>>>> 55f7a8eb5aeca981060822d9c84fbf991bd9f681
 
 export class Multipart {
   constructor(
@@ -52,15 +43,6 @@ export class Multipart {
     return updatedPhoto ? (rawFields.photoURL = photoURLs[0]) : rawFields;
   }
 
-<<<<<<< HEAD
-                const url = await this.videoStorage.save({ buffer, filename, mimetype })
-                rawFields[part.fieldname] = url
-                rawFields.buffer = buffer;
-        rawFields.mimetype = mimetype;
-                fileName = filename
-            } else if (part.type === 'field') rawFields[part.fieldname] = part.value
-        }
-=======
   async handleVideoMultipart(req: FastifyRequest) {
     const data = await req.parts();
     let rawFields: any = {};
@@ -70,7 +52,6 @@ export class Multipart {
       if (part.type === "file" && part.filename) {
         const buffer = await part.toBuffer();
         const { filename, mimetype } = part;
->>>>>>> 55f7a8eb5aeca981060822d9c84fbf991bd9f681
 
         const url = await this.videoStorage.save({
           buffer,
