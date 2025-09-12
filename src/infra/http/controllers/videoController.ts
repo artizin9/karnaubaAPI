@@ -2,7 +2,6 @@ import { CreateVideoUseCase } from "../../../use-cases/videos/createVideoUseCase
 import { DeleteVideoUseCase } from "../../../use-cases/videos/deleteVideoUseCase";
 import { GetAllVideoUseCase } from "../../../use-cases/videos/getAllVideoUseCase";
 import { GetIdVideoUseCase } from "../../../use-cases/videos/getIdVideoUseCase";
-import { GetWatchUseCase } from "../../../use-cases/videos/getVideoWatchUseCase";
 import { UpdateVideoUseCase } from "../../../use-cases/videos/updateVideoUseCase";
 import { FastifyContextDTO } from "../../dto/fastifyContextDTO";
 import { Multipart } from "../plugins/multipart";
@@ -16,7 +15,6 @@ export class VideoController {
         private videoDelete: DeleteVideoUseCase,
         private videoGetUnique: GetIdVideoUseCase,
         private videoGetAll: GetAllVideoUseCase,
-        private videoWatch: GetWatchUseCase,
         private multipart: Multipart
     ) { }
 
@@ -52,6 +50,7 @@ export class VideoController {
         const videos = await this.videoGetAll.execute()
         fastify.res.send({ Message: "Videos encontrados", videos })
     }
+<<<<<<< HEAD
 
 async getWatch(fastify: FastifyContextDTO) {
     const { filename } = fastify.req.params as { filename: string };
@@ -78,3 +77,6 @@ async getWatch(fastify: FastifyContextDTO) {
 
 }
 
+=======
+}
+>>>>>>> 55f7a8eb5aeca981060822d9c84fbf991bd9f681

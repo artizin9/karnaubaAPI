@@ -9,6 +9,7 @@ export class CreateVideoUseCase {
 
     async execute(data: videoSchemaDTO, duration: number, filename: string){
         const parsedData = videoSchema.safeParse(data);
+        console.log(parsedData.error)
         if (!parsedData.success) throw new ServerError("Bad Request")
 
         const id = randomUUID()
