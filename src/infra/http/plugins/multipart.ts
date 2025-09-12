@@ -4,6 +4,11 @@ import { PhotoStorageType } from "../../dto/photoStorageDTO";
 import { VideoStorageService } from "../../services/videoStorageService";
 import { Readable } from "stream";
 import ffmpeg from "fluent-ffmpeg";
+import ffmpegPath from "@ffmpeg-installer/ffmpeg";
+import ffprobePath from "@ffprobe-installer/ffprobe"
+
+ffmpeg.setFfmpegPath(ffmpegPath.path);
+ffmpeg.setFfprobePath(ffprobePath.path);
 
 export class Multipart {
     constructor(private photoStorage: PhotoStorageService, private videoStorage: VideoStorageService) { };
@@ -39,6 +44,8 @@ export class Multipart {
 
                 const url = await this.videoStorage.save({ buffer, filename, mimetype })
                 rawFields[part.fieldname] = url
+                rawFields.buffer = buffer;
+        rawFields.mimetype = mimetype;
                 fileName = filename
             } else if (part.type === 'field') rawFields[part.fieldname] = part.value
         }

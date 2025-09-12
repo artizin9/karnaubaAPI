@@ -6,6 +6,8 @@ import { GetWatchUseCase } from "../../../use-cases/videos/getVideoWatchUseCase"
 import { UpdateVideoUseCase } from "../../../use-cases/videos/updateVideoUseCase";
 import { FastifyContextDTO } from "../../dto/fastifyContextDTO";
 import { Multipart } from "../plugins/multipart";
+import { createReadStream, statSync } from "fs";
+import { join } from "path";
 
 export class VideoController {
     constructor(
@@ -51,15 +53,28 @@ export class VideoController {
         fastify.res.send({ Message: "Videos encontrados", videos })
     }
 
-    async getWatch(fastify: FastifyContextDTO) {
-        const { filename } = fastify.req.params as { filename: string }
-        const { start, end, fileSize, chunkSize, stream } = await this.videoWatch.execute(filename, fastify.req)
+async getWatch(fastify: FastifyContextDTO) {
+    const { filename } = fastify.req.params as { filename: string };
+    const videoPath = join(process.cwd(), "videos", filename);
 
-        fastify.res.code(206).headers({
-            "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-            "Accept-Ranges": "bytes",
-            "Content-Length": chunkSize,
-            "Content-Type": "video/mp4",
-        }).send(stream)
+    try {
+        const stat = statSync(videoPath);
+        const fileSize = stat.size;
+
+        const stream = createReadStream(videoPath);
+
+        fastify.res
+            .code(200)
+            .headers({
+                "Content-Length": fileSize,
+                "Content-Type": "video/mp4",
+                // "Content-Disposition" removido para permitir streaming
+            })
+            .send(stream);
+    } catch (err) {
+        fastify.res.code(404).send({ message: "Video not found" });
     }
 }
+
+}
+
