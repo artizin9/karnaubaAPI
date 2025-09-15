@@ -12,6 +12,7 @@ import { staticFilesPlugin } from "./plugins/static";
 
 const server = fastify();
 
+
 server.register(fastifyCookie);
 server.register(fastifyCors, {
     origin: env.PORTFRONT,
