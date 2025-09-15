@@ -64,6 +64,7 @@ server.get('/', (req: FastifyRequest, res: FastifyReply) => {
     res.send('Bem vindo a API da Massape Fascinante')
 })
 
+const isProduction = env.NODE_ENV === "production"
 server.listen({ port: Number(env.PORT), host: '0.0.0.0' }).then(() => {
     console.log(isProduction ? "HTTPS SERVER RUNNING!" : "HTTP SERVER RUNNING!")
 })
