@@ -136,6 +136,7 @@ model Video {
   id          String   @id
   title       String   
   description String?  
+  photoURL    String?
   url         String  
   filename    String
   duration    Float?   
