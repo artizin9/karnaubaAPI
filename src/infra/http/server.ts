@@ -11,11 +11,14 @@ import helmet from '@fastify/helmet';
 import { staticFilesPlugin } from "./plugins/static";
 
 const server = fastify();
-
+const portFront =
+    env.NODE_ENV === "production"
+        ? env.PORTFRONT?.split(",")
+        : env.PORTFRONT?.split(",") || [];
 
 server.register(fastifyCookie);
 server.register(fastifyCors, {
-    origin: env.PORTFRONT,
+    origin: portFront,
     credentials: true,
     methods: ['GET', 'POST', 'DELETE', 'PUT']
 })
@@ -57,10 +60,10 @@ server.register(fastifySwaggerUi, {
 });
 server.register(registerRoutes);
 
-server.get('/', (req: FastifyRequest, res: FastifyReply) =>{
+server.get('/', (req: FastifyRequest, res: FastifyReply) => {
     res.send('Bem vindo a API da Massape Fascinante')
 })
 
 server.listen({ port: Number(env.PORT), host: '0.0.0.0' }).then(() => {
-    console.log("HTTP SERVER RUNNING!")
+    console.log(isProduction ? "HTTPS SERVER RUNNING!" : "HTTP SERVER RUNNING!")
 })

@@ -5,9 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx src/infra/http/server.ts",
+    "dev": "cross-env NODE_ENV=development tsx src/infra/http/server.ts",
     "build": "prisma generate && tsc && node fix-imports.mjs",
-    "start": "prisma migrate deploy && node dist/infra/http/server.js"
+    "start": "cross-env NODE_ENV=production prisma migrate deploy && cross-env NODE_ENV=production node dist/infra/http/server.js"
   },
   "keywords": [],
   "author": "",
@@ -44,6 +44,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.21",
     "@vitest/coverage-v8": "3.1.4",
+    "cross-env": "^10.0.0",
     "prisma": "^6.14.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
