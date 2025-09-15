@@ -7,6 +7,7 @@ import { RoomUpdateUseCase } from "../../../use-cases/room/roomUpdateUseCase";
 import { IPrismaPlaceRepository } from "../../database/IPrismaPlaceRepository";
 import { IPrismaRoomRepository } from "../../database/IPrismaRoomRepository";
 import { PhotoStorageService } from "../../services/photoStorageService";
+import { VideoStorageService } from "../../services/videoStorageService";
 import { roomController } from "../controllers/roomController";
 import { Multipart } from "../plugins/multipart";
 
@@ -15,7 +16,8 @@ const prismaRoomRepository = new IPrismaRoomRepository();
 const prismaPlaceRepository = new IPrismaPlaceRepository();
 
 const photoStorageService = new PhotoStorageService();
-const multipart = new Multipart(photoStorageService);
+const videoStorage = new VideoStorageService();
+const multipart = new Multipart(photoStorageService, videoStorage);
 
 const roomCreateUseCase = new RoomCreateUseCase(prismaPlaceRepository, prismaRoomRepository);
 const roomUpdateUseCase = new RoomUpdateUseCase(prismaRoomRepository);

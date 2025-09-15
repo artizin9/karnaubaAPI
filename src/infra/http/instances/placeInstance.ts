@@ -14,12 +14,14 @@ import { PlaceController } from "../controllers/placeController";
 import { Multipart } from "../plugins/multipart";
 import { IPrismaAdminReposotory } from "../../database/IPrismaAdminRepository";
 import { PlaceGetRelatedPlacesByIdUseCase } from "../../../use-cases/place/placegetRelatedPlacesByIdUseCase";
+import { VideoStorageService } from "../../services/videoStorageService";
 
 const prismaPlaceRepository = new IPrismaPlaceRepository();
 const photoStorage = new PhotoStorageService();
 const prismaCityRepository = new IPrismaCityRepository();
 const prismaAdminRepository = new IPrismaAdminReposotory();
-const multipart = new Multipart(photoStorage);
+const videoStorage = new VideoStorageService();
+const multipart = new Multipart(photoStorage, videoStorage);
 const createPlaceUseCase = new PlaceCreateUseCase(prismaPlaceRepository, prismaCityRepository, prismaAdminRepository);
 const updatePlaceUseCase = new PlaceUpdateUseCase(prismaPlaceRepository, prismaCityRepository);
 const deletePlaceUseCase = new PlaceDeleteUseCase(prismaPlaceRepository, prismaCityRepository);

@@ -13,6 +13,7 @@ import { EventController } from "../controllers/eventController";
 import { Multipart } from "../plugins/multipart";
 import { EventFindAvailableUseCase } from "../../../use-cases/event/eventFindAvailableUseCase";
 import { IPrismaAdminReposotory } from "../../database/IPrismaAdminRepository";
+import { VideoStorageService } from "../../services/videoStorageService";
 
 const prismaEventRepository = new IPrismaEventRepository()
 const prismaCityRepository = new IPrismaCityRepository();
@@ -27,6 +28,7 @@ const eventUpdatePhotoUseCase = new EventUpdatePhotoUseCase(prismaEventRepositor
 const eventCreatePhotoUseCase = new EventCreatePhotoUseCase(prismaEventRepository);
 const eventDeletePhotoUseCase = new EventDeletePhotoUseCase(prismaEventRepository);
 const eventFindAvailableUseCase = new EventFindAvailableUseCase(prismaEventRepository);
-const multipart = new Multipart(photoStorageService);
+const videoStorage = new VideoStorageService();
+const multipart = new Multipart(photoStorageService, videoStorage);
 
 export const eventInstance = new EventController(multipart, eventCreateUseCase, eventUpdateUseCase, eventDeleteUseCase, eventFindUniqueUseCase, eventFindAllUseCase, eventUpdatePhotoUseCase, eventCreatePhotoUseCase, eventDeletePhotoUseCase, eventFindAvailableUseCase);

@@ -17,11 +17,10 @@ export class PlaceCreateUseCase {
 
     async execute(data: placeDTO, req: FastifyRequest){
         const parsedData = placeSchema.safeParse(data);
-        console.log(parsedData.error)
         if (!parsedData.success) throw new ServerError("Bad Request");
         
 
-        const { name, location, description, photoURLs, category, phone, instagram, latitude, longitude } = parsedData.data!
+        const { name, location, description, subLocation, photoURLs, category, phone, instagram, latitude, longitude } = parsedData.data!
 
         const adminId = req.user?.id
         if (!adminId) throw new ServerError("Admin not authorized", 401);
@@ -38,7 +37,7 @@ export class PlaceCreateUseCase {
             url
         }));
 
-        const place = new Place(name, location, description, category, isAdminExist.cityId, id, phone ?? null, instagram ?? null, latitude, longitude, photos);
+        const place = new Place(name, location, subLocation, description, category, isAdminExist.cityId, id, phone ?? null, instagram ?? null, latitude, longitude, photos);
 
         await this.placeRepository.createPlace(place);
         return place
