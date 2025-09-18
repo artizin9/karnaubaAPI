@@ -2,3 +2,5 @@ node_modules
 /dist
 .prod.env
 .dev.env
+/videos
+/uploads
