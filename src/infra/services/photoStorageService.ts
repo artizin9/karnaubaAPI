@@ -15,6 +15,7 @@ export class PhotoStorageService implements PhotoStorageInterface{
     private uploadsTaxiDrivers = join(this.uploads, "taxiDrivers");
     private uploadsRooms = join(this.uploads, 'room')
     private uploadsNews = join(this.uploads, "news")
+    private uploadsThumbnails = join(this.uploads, "thumbnails")
 
     constructor(){
         if(!existsSync(this.uploads)) mkdirSync(this.uploads);
@@ -24,6 +25,7 @@ export class PhotoStorageService implements PhotoStorageInterface{
         if(!existsSync(this.uploadsTaxiDrivers)) mkdirSync(this.uploadsTaxiDrivers);
         if(!existsSync(this.uploadsRooms)) mkdirSync(this.uploadsRooms);
         if(!existsSync(this.uploadsNews)) mkdirSync(this.uploadsNews);
+        if(!existsSync(this.uploadsThumbnails)) mkdirSync(this.uploadsThumbnails);
     };
 
 
@@ -35,7 +37,8 @@ export class PhotoStorageService implements PhotoStorageInterface{
             place: this.uploadsPlace,
             taxiDrivers: this.uploadsTaxiDrivers,
             room: this.uploadsRooms,
-            news: this.uploadsNews
+            news: this.uploadsNews,
+            thumbnails: this.uploadsThumbnails,
         };
         const typePath = uploadPaths[type as keyof typeof uploadPaths];
         if (!typePath) throw new ServerError("Invalid upload type", 400)

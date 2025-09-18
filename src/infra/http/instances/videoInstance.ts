@@ -1,4 +1,5 @@
 import { CreateVideoUseCase } from "../../../use-cases/videos/createVideoUseCase";
+import { DeleteAllVideoUseCase } from "../../../use-cases/videos/deleteAllVideoUseCase";
 import { DeleteVideoUseCase } from "../../../use-cases/videos/deleteVideoUseCase";
 import { GetAllVideoUseCase } from "../../../use-cases/videos/getAllVideoUseCase";
 import { GetIdVideoUseCase } from "../../../use-cases/videos/getIdVideoUseCase";
@@ -24,6 +25,10 @@ const deleteVideoUseCase = new DeleteVideoUseCase(
   videoStorage
 );
 const videoGetUniqueUseCase = new GetIdVideoUseCase(videoRepository);
+const videoDeleteAllUseCase = new DeleteAllVideoUseCase(
+  videoRepository,
+  videoStorage
+);
 
 export const videoInstance = new VideoController(
   createVideoUseCase,
@@ -31,5 +36,6 @@ export const videoInstance = new VideoController(
   deleteVideoUseCase,
   videoGetUniqueUseCase,
   videoGetAllUseCase,
+  videoDeleteAllUseCase,
   multipart
 );

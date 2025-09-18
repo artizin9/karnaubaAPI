@@ -22,3 +22,6 @@ export function deleteVideo(fastify: FastifyInstance){
     fastify.delete("/video/:id", {preHandler: authMiddleware}, (req, res) => videoInstance.delete({req, res}));
 }
 
+export function deleteAllVideo(fastify: FastifyInstance){
+    fastify.delete("/video", {preHandler: authMiddleware}, (req, res) => videoInstance.deleteAll({req, res}));
+}

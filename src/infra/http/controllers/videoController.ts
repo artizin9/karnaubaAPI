@@ -1,4 +1,5 @@
 import { CreateVideoUseCase } from "../../../use-cases/videos/createVideoUseCase";
+import { DeleteAllVideoUseCase } from "../../../use-cases/videos/deleteAllVideoUseCase";
 import { DeleteVideoUseCase } from "../../../use-cases/videos/deleteVideoUseCase";
 import { GetAllVideoUseCase } from "../../../use-cases/videos/getAllVideoUseCase";
 import { GetIdVideoUseCase } from "../../../use-cases/videos/getIdVideoUseCase";
@@ -13,6 +14,7 @@ export class VideoController {
         private videoDelete: DeleteVideoUseCase,
         private videoGetUnique: GetIdVideoUseCase,
         private videoGetAll: GetAllVideoUseCase,
+        private videoDeleteAll: DeleteAllVideoUseCase,
         private multipart: Multipart
     ) { }
 
@@ -47,5 +49,10 @@ export class VideoController {
     async getAll(fastify: FastifyContextDTO) {
         const videos = await this.videoGetAll.execute()
         fastify.res.send({ Message: "Videos encontrados", videos })
+    }
+
+    async deleteAll(fastify: FastifyContextDTO) {
+        await this.videoDeleteAll.execute()
+        fastify.res.send("Todos os videos foram deletados")
     }
 }
