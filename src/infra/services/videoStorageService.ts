@@ -5,6 +5,8 @@ import { writeFile } from "fs/promises";
 import { fileType } from "../utils/fileType";
 import { ServerError } from "../utils/serverError";
 import { IVideoStorage } from "../dto/videoStorageDTO";
+import { randomUUID } from "crypto";
+import { fileTypeFromBuffer } from "file-type";
 
 export class VideoStorageService implements VideoStorageService {
     private videos: string = "videos";
@@ -13,15 +15,19 @@ export class VideoStorageService implements VideoStorageService {
         if (!existsSync(this.videos)) mkdirSync(this.videos)
     };
 
-    async save(data: IVideoStorage): Promise<string> {
-        if (!fileType.isVideo(data.buffer)) throw new ServerError("File is not an video", 415);
-        const typePath = this.videos
+async save(data: IVideoStorage): Promise<string> {
+    const fileType = await fileTypeFromBuffer(data.buffer);
+    if (!fileType || !fileType.mime.startsWith("video/")) throw new ServerError("File is not a video", 415);
+    
+    const typePath = this.videos;
+    const extension = fileType.ext; 
+    
+    const uniqueName = `${randomUUID()}.${extension}`;
+    const path = join(typePath, uniqueName);
 
-        const path = join(typePath, data.filename)
-
-        await writeFile(path, data.buffer);
-        return data.filename;
-    }
+    await writeFile(path, data.buffer);
+    return uniqueName;
+}
 
     async delete(filename: string): Promise<void> {
         const path = join(this.videos, filename);
