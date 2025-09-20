@@ -15,7 +15,6 @@ export class CreateVideoUseCase {
         const id = randomUUID()
 
         const video = new Video(id, parsedData.data.title, parsedData.data.description, parsedData.data.photoURL, parsedData.data.videoURL, filename, duration)
-        console.log(video)
 
         const createdVideo = await this.repo.create(video)
         return createdVideo
