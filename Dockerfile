@@ -1,27 +1,35 @@
-FROM node:22.1.0-slim
+FROM node:20-slim AS build
+
+# Instalando dependências necessárias para o Prisma e PNPM
+RUN apt-get update -y && apt-get install -y openssl
+RUN corepack enable && corepack prepare pnpm@10.6.3 --activate
 
 WORKDIR /app
 
-# Instala dependências do sistema
-RUN apt-get update -y && apt-get install -y openssl libssl-dev
-
-# Instala pnpm
-RUN npm install -g pnpm
-
-# Copia apenas arquivos de dependência primeiro para aproveitar cache
-COPY package.json pnpm-lock.yaml* ./
-
-# Instala dependências
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
-# Copia todo o restante do projeto (depois das dependências)
 COPY . .
 
-# Gera o Prisma Client
-RUN pnpm exec prisma generate
 
-# Expõe a porta da API
-EXPOSE 3333
+RUN npx prisma generate
+RUN pnpm build
 
-# Roda o projeto
-CMD ["pnpm", "run", "dev"]
+# Estágio de Execução 
+FROM node:20-slim AS runner
+
+RUN apt-get update -y && apt-get install -y openssl
+RUN corepack enable && corepack prepare pnpm@10.6.3 --activate
+
+WORKDIR /app
+
+# Copiamos apenas o que é necessário para rodar
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/fix-imports.mjs ./fix-imports.mjs
+
+EXPOSE 4444
+
+CMD ["pnpm", "start"]
